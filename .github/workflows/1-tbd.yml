@@ -25,7 +25,7 @@ jobs:
           submission: "hello-world.md"
           solution: ".github/solutions/1-solution-prompt.md"
           webhook: ${{ vars.WEBHOOK_URL }}
-          accountsid: ${{ vars.ACCOUNT_SID }}
+          accountsid: ${{ secrets.ACCOUNT_SID }}
           authtoken: ${{ vars.AUTH_TOKEN }}
 
       # Update README.md to switch step 1 for step 2, only if the solution check was successful
