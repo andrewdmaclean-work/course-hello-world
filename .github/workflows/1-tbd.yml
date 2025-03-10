@@ -1,0 +1,66 @@
+name: Step Completion Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository so that we can edit the README.
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Let's get all the branches.
+
+      # Check that there is at least one header in the markdown file.
+      - name: Check Solution
+        id: check_solution
+        uses: andrewdmaclean-work/action-check-file@main
+        with:
+          step: ".github/steps/1-add-hello.md"
+          submission: "hello-world.md"
+          solution: ".github/solutions/1-solution-prompt.md"
+          webhook: ${{ vars.WEBHOOK_URL }}
+          accountsid: ${{ vars.ACCOUNT_SID }}
+          authtoken: ${{ vars.AUTH_TOKEN }}
+
+      # Update README.md to switch step 1 for step 2, only if the solution check was successful
+      - name: Update to step 2
+        if: steps.check_solution.outputs.assessment == 'true'
+        uses: skills/action-update-step@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          from_step: 1
+          to_step: 2
+          branch_name: main
+
+      # Post a comment and merge the PR if the solution is correct
+      - name: Success Actions
+        if: steps.check_solution.outputs.assessment == 'true'
+        uses: octokit/request-action@v2
+        with:
+          route: POST /repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            🎉 Congratulations! You successfully completed step 1. Go back to the README in the main branch to continue.
+
+      # Post a comment to try again if the solution was incorrect, including the reason
+      - name: Try Again Comment
+        if: steps.check_solution.outputs.assessment != 'true'
+        uses: octokit/request-action@v2
+        with:
+          route: POST /repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            🚫 The solution did not pass the validation check. Please try again.
+            **Reason:** ${{ steps.check_solution.outputs.reason }}
+
+      # Merge the PR if the solution is correct
+      - name: Merge PR
+        if: steps.check_solution.outputs.assessment == 'true'
+        run: |
+          gh pr merge ${{ github.event.pull_request.number }} --merge --admin --repo ${{ github.repository }}
