@@ -41,7 +41,7 @@ jobs:
       # Post a comment and merge the PR if the solution is correct
       - name: Success Actions
         if: steps.check_solution.outputs.assessment == 'true'
-        uses: octokit/request-action@v2
+        uses: octokit/request-action@v2.4.0
         with:
           route: POST /repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -51,7 +51,7 @@ jobs:
       # Post a comment to try again if the solution was incorrect, including the reason
       - name: Try Again Comment
         if: steps.check_solution.outputs.assessment != 'true'
-        uses: octokit/request-action@v2
+        uses: octokit/request-action@v2.4.0
         with:
           route: POST /repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments
           token: ${{ secrets.GITHUB_TOKEN }}
