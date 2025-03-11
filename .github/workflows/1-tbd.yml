@@ -42,6 +42,11 @@ jobs:
           from_step: 1
           to_step: 2
           branch_name: main
+          
+      - name: Debug Output
+        run: |
+          echo "Assessment: ${{ steps.checksolution.outputs.assessment }}"
+          echo "Reason: ${{ steps.checksolution.outputs.reason }}"
 
     # Post a comment and merge the PR if the solution is correct
       - name: Success Comment
