@@ -11,19 +11,16 @@ permissions:
     repository-projects: write
 
 jobs:
-  checkout-repo:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
   check-solution:
     runs-on: ubuntu-latest
     outputs:
       assessment: ${{ steps.solution.outputs.assessment }}
       reason: ${{ steps.solution.outputs.reason }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Check Solution
         id: solution
         uses: andrewdmaclean-work/action-check-file@main
