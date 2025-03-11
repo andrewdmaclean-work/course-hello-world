@@ -22,8 +22,8 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check Solution
-        uses: andrewdmaclean-work/action-check-file@main
         id: solution
+        uses: andrewdmaclean-work/action-check-file@main
         with:
           step: ".github/steps/1-add-hello.md"
           submission: "hello-world.md"
@@ -31,6 +31,8 @@ jobs:
           webhook: ${{ vars.WEBHOOK_URL }}
           accountsid: ${{ vars.ACCOUNT_SID }}
           authtoken: ${{ secrets.AUTH_TOKEN }}
+      - name: Use the output from composite action
+        run: echo "The composite action returned ${{ steps.solution.outputs.assessment }}"
   check-variables:
     runs-on: ubuntu-latest
     needs: check-solution
