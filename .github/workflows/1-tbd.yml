@@ -31,6 +31,13 @@ jobs:
           webhook: ${{ vars.WEBHOOK_URL }}
           accountsid: ${{ vars.ACCOUNT_SID }}
           authtoken: ${{ secrets.AUTH_TOKEN }}
+  check-variables:
+    runs-on: ubuntu-latest
+    needs: check-solution
+    steps:
+      - name: Success Comment
+        run: |
+          echo "Assessment is: $needs.check-solution.outputs.assessment"
   update-step:
     runs-on: ubuntu-latest
     needs: check-solution
