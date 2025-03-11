@@ -31,8 +31,10 @@ jobs:
           webhook: ${{ vars.WEBHOOK_URL }}
           accountsid: ${{ vars.ACCOUNT_SID }}
           authtoken: ${{ secrets.AUTH_TOKEN }}
-      - name: Use the output from composite action
-        run: echo "The composite action returned ${{ steps.solution.outputs.assessment }}"
+      - name: Get Output 
+        run: echo "assessment=${{ steps.solution.outputs.assessment }}" >> $GITHUB_OUTPUT
+      - name: Print Assessment
+        run: echo {{ steps.solution.outputs.assessment }}
   check-variables:
     runs-on: ubuntu-latest
     needs: check-solution
