@@ -45,8 +45,8 @@ jobs:
           
       - name: Debug Output
         run: |
-          echo "Assessment: ${{ steps.checksolution.outputs.assessment }}"
-          echo "Reason: ${{ steps.checksolution.outputs.reason }}"
+          echo "Assessment: $ASSESSMENT"
+          echo "Reason: $REASON"
 
     # Post a comment and merge the PR if the solution is correct
       - name: Success Comment
