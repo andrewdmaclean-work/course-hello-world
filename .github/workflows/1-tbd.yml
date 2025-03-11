@@ -34,7 +34,7 @@ jobs:
     needs: check-solution
     steps:
       - name: Handle Solution Result
-        uses: andrewdmaclean-work/action-check-file@main
+        uses: andrewdmaclean-work/action-comment-and-merge@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
