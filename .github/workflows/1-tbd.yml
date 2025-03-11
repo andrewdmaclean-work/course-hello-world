@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
     contents: write
@@ -11,19 +12,15 @@ permissions:
     repository-projects: write
 
 jobs:
-  check-solution:
+  checkout:
     runs-on: ubuntu-latest
-    outputs:
-      assessment: ${{ steps.solution.outputs.assessment }}
-      reason: ${{ steps.solution.outputs.reason }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Check Solution
-        id: solution
-        uses: andrewdmaclean-work/action-check-file@main
+  check-solution:
+        uses: andrewdmaclean-work/action-check-file/.github/workflows/action.yml@main
         with:
           step: ".github/steps/1-add-hello.md"
           submission: "hello-world.md"
