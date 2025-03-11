@@ -36,9 +36,7 @@ jobs:
     needs: check-solution
     steps:
       - name: Check
-        env:
-          ASSESSMENT: needs.check-solution.outputs.assessment
-        run: echo "Assessment is $ASSESSMENT"
+        run: echo ${{ needs.check-solution.outputs.assessment }}   
   update-step:
     runs-on: ubuntu-latest
     needs: check-solution
