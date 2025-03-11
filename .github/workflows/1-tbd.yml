@@ -13,11 +13,8 @@ permissions:
 jobs:
   check-solution:
     runs-on: ubuntu-latest
-    outputs:
-      assessment: ${{ steps.check.outputs.assessment }}
-      reason: ${{ steps.check.outputs.reason }}
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -31,13 +28,9 @@ jobs:
           webhook: ${{ vars.WEBHOOK_URL }}
           accountsid: ${{ vars.ACCOUNT_SID }}
           authtoken: ${{ secrets.AUTH_TOKEN }}
-  check-variables:
-    runs-on: ubuntu-latest
-    needs: check-solution
-    steps:
-      - name: Check if Variables are Set
+      - name: Reponse
         run: |
-          echo "Assessment is ${{ needs.check-solution.outputs.assessment }}"
+          echo "Assessment is ${{ steps.check.outputs.assessment }}"
   update-step:
     runs-on: ubuntu-latest
     needs: check-solution
