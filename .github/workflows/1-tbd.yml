@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: Check
         env:
-          ASSESSMENT: ${{ $needs.check-solution.outputs.assessment }}
+          ASSESSMENT: ${{ needs.check-solution.outputs.assessment }}
         run: echo "Assessment is $ASSESSMENT"
   update-step:
     runs-on: ubuntu-latest
