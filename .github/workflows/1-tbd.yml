@@ -14,15 +14,15 @@ jobs:
   check-solution:
     runs-on: ubuntu-latest
     outputs:
-      assessment: ${{ steps.solution.outputs.assessment }}
-      reason: ${{ steps.solution.outputs.reason }}
+      assessment: ${{ steps.check.outputs.assessment }}
+      reason: ${{ steps.check.outputs.reason }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Check Solution
-        id: solution
+        id: check
         uses: andrewdmaclean-work/action-check-file@main
         with:
           step: ".github/steps/1-add-hello.md"
