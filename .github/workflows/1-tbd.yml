@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
     contents: write
@@ -12,15 +11,19 @@ permissions:
     repository-projects: write
 
 jobs:
-  checkout:
+  check-solution:
     runs-on: ubuntu-latest
+    outputs:
+      assessment: ${{ steps.solution.outputs.assessment }}
+      reason: ${{ steps.solution.outputs.reason }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-  check-solution:
-        uses: andrewdmaclean-work/action-check-file/.github/workflows/action.yml@main
+      - name: Check Solution
+        id: solution
+        uses: andrewdmaclean-work/action-check-file@main
         with:
           step: ".github/steps/1-add-hello.md"
           submission: "hello-world.md"
@@ -32,8 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-solution
     steps:
-      - name: Check
-        run: echo ${{ needs.check-solution.outputs.assessment }}   
+      - name: Check if Variables are Set
+        run: echo "Assessment is ${{ needs.check-solution.outputs.assessment }}"
   update-step:
     runs-on: ubuntu-latest
     needs: check-solution
