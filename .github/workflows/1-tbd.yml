@@ -30,7 +30,7 @@ jobs:
           authtoken: ${{ secrets.AUTH_TOKEN }}
       - name: Reponse
         run: |
-          echo "Assessment is ${{ steps.check.outputs.assessment }}"
+          echo \${{ steps.check.outputs.assessment }}
   update-step:
     runs-on: ubuntu-latest
     needs: check-solution
